@@ -2,15 +2,15 @@
 
 args <- commandArgs(trailingOnly = TRUE)
 
-input_one <- if (length(args) >= 1) args[[1]] else "data/commodity_volume.csv"
-input_two <- if (length(args) >= 2) args[[2]] else "data/deforestation.csv"
+input_file_1 <- if (length(args) >= 1) args[[1]] else "data/commodity_volume.csv"
+input_file_2 <- if (length(args) >= 2) args[[2]] else "data/deforestation.csv"
 output_dir <- if (length(args) >= 3) args[[3]] else "output"
 
 if (!requireNamespace("ggplot2", quietly = TRUE)) {
   stop("Package 'ggplot2' is required. Install it with install.packages('ggplot2').")
 }
 
-read_table <- function(path) {
+read_biome_csv <- function(path) {
   if (!file.exists(path)) {
     stop(sprintf("Input file not found: %s", path))
   }
@@ -24,10 +24,10 @@ read_table <- function(path) {
   table
 }
 
-left_table <- read_table(input_one)
-right_table <- read_table(input_two)
+first_table <- read_biome_csv(input_file_1)
+second_table <- read_biome_csv(input_file_2)
 
-merged <- merge(left_table, right_table, by = "biome", all = TRUE)
+merged <- merge(first_table, second_table, by = "biome", all = TRUE)
 merged <- merged[order(merged$biome), ]
 
 if (!dir.exists(output_dir)) {

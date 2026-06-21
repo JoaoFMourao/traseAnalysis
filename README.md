@@ -1,6 +1,6 @@
 # traseAnalysis
 
-Simple repository to merge tabular data on the biome level in Brazil and generate graphs with ggplot2.
+Simple repository to analyze tabular data on the biome level in Brazil by merging datasets and generating ggplot2 graphs.
 
 ## Requirements
 
