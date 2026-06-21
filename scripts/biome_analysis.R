@@ -68,9 +68,15 @@ ggplot2::ggsave(
 )
 
 if (length(numeric_columns) >= 2) {
+  scatter_data <- data.frame(
+    x = merged[[numeric_columns[[1]]]],
+    y = merged[[numeric_columns[[2]]]],
+    biome = merged$biome
+  )
+
   scatter_plot <- ggplot2::ggplot(
-    merged,
-    ggplot2::aes_string(x = numeric_columns[[1]], y = numeric_columns[[2]], label = "biome")
+    scatter_data,
+    ggplot2::aes(x = x, y = y, label = biome)
   ) +
     ggplot2::geom_point(size = 3, na.rm = TRUE) +
     ggplot2::geom_text(vjust = -0.6, na.rm = TRUE) +
