@@ -37,16 +37,22 @@ if (!dir.exists(output_dir)) {
 merged_csv <- file.path(output_dir, "merged_biome_data.csv")
 write.csv(merged, merged_csv, row.names = FALSE)
 
-numeric_columns <- names(merged)[sapply(merged, is.numeric)]
+plot_data <- merged[!is.na(merged$biome), , drop = FALSE]
+
+if (nrow(plot_data) == 0) {
+  stop("Merged data has no non-missing biome values to plot.")
+}
+
+numeric_columns <- names(plot_data)[sapply(plot_data, is.numeric)]
 
 if (length(numeric_columns) == 0) {
   stop("Merged data has no numeric columns to plot.")
 }
 
 long_data <- data.frame(
-  biome = rep(merged$biome, times = length(numeric_columns)),
-  metric = rep(numeric_columns, each = nrow(merged)),
-  value = unlist(merged[numeric_columns], use.names = FALSE)
+  biome = rep(plot_data$biome, times = length(numeric_columns)),
+  metric = rep(numeric_columns, each = nrow(plot_data)),
+  value = unlist(plot_data[numeric_columns], use.names = FALSE)
 )
 
 bar_plot <- ggplot2::ggplot(long_data, ggplot2::aes(x = biome, y = value, fill = metric)) +
@@ -69,9 +75,9 @@ ggplot2::ggsave(
 
 if (length(numeric_columns) >= 2) {
   scatter_data <- data.frame(
-    x = merged[[numeric_columns[[1]]]],
-    y = merged[[numeric_columns[[2]]]],
-    biome = merged$biome
+    x = plot_data[[numeric_columns[[1]]]],
+    y = plot_data[[numeric_columns[[2]]]],
+    biome = plot_data$biome
   )
 
   scatter_plot <- ggplot2::ggplot(
@@ -79,7 +85,7 @@ if (length(numeric_columns) >= 2) {
     ggplot2::aes(x = x, y = y, label = biome)
   ) +
     ggplot2::geom_point(size = 3, na.rm = TRUE) +
-    ggplot2::geom_text(vjust = -0.6, na.rm = TRUE) +
+    ggplot2::geom_text(vjust = -0.6, size = 3, na.rm = TRUE) +
     ggplot2::theme_minimal() +
     ggplot2::labs(
       title = "Biome comparison",
