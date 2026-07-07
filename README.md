@@ -50,3 +50,17 @@ Pacotes necessários: `dplyr`, `tidyr`, `readr`, `ggplot2`, `scales`, `stringr`,
 
 - Como tratar a série 2014–2023 sem dupla contagem entre janelas vizinhas (compartilham 4 anos).
 - Tratamento da possível sobreposição espacial entre soja e pasto (sinalizada via `overlap_warning`).
+
+## Apresentação para a Trase
+
+A pasta `presentation/` reúne os materiais para explicar essa análise à própria Trase
+(dona dos dados), antes de uma reunião entre Trase e DPCD/MMA. Fluxo em 2 etapas:
+
+1. **Outline** (`presentation/outline_pptx_trase.md`) — roteiro completo, slide a
+   slide, em Português, com os números exatos usados. Precisa ser validado antes de
+   seguir para a etapa 2.
+2. **Geração do `.pptx`** (`presentation/build_pptx.R`, a ser criado só depois do
+   outline aprovado) — script R usando os pacotes `officer` e `flextable` para montar
+   o `.pptx` de verdade a partir do outline, usando um template visual da MMA
+   (esperado em `INPUT_DIR/template_mma_dpcd.pptx`) e reaproveitando os PNGs/tabelas já
+   gerados por `R/deforestation_attribution.R`.
